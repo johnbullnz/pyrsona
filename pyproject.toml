@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pyrsona"
+version = "0.1"
+description = ""
+authors = ["John <johnbullnz@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^1.9.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0.1"
+pytest-randomly = "^3.11.0"
+pytest-cov = "^3.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
