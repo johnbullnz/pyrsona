@@ -67,7 +67,8 @@ print(meta)
 #> {'operator_name': 'Jane Smith', 'country': 'NZ'}
 
 print(table_rows)
-#> [{'id': 1, 'time': datetime.time(20, 4, 5), 'value': 2098.0}, {'id': 2, 'time': datetime.time(20, 5), 'value': 4328.0}]
+#> [{'id': 1, 'time': datetime.time(20, 4, 5), 'value': 2098.0}, {'id': 2,
+# 'time': datetime.time(20, 5), 'value': 4328.0}]
 
 print(structure_id)
 #> ExampleStructure
@@ -133,7 +134,8 @@ print(meta)
 #> {'operator_name': 'Jane Smith', 'country': 'NZ', 'city': 'Auckland'}
 
 print(table_rows)
-#> [{'id': 1, 'time': datetime.time(20, 4, 5), 'value': 2098.0}, {'id': 2, 'time': datetime.time(20, 5), 'value': 4328.0}]
+#> [{'id': 1, 'time': datetime.time(20, 4, 5), 'value': 2098.0}, {'id': 2,
+# 'time': datetime.time(20, 5), 'value': 4328.0}]
 
 print(structure_id)
 #> NewExampleStructure
@@ -186,7 +188,9 @@ print(meta)
 #> {'operator_name': 'Jane Smith', 'country': 'NZ', 'version': 3}
 
 print(table_rows)
-#> [{'time': datetime.time(20, 4, 5), 'duration_sec': 12.2, 'value': 2098.0, 'total': 2098.0}, {'time': datetime.time(20, 5), 'duration_sec': 2.35, 'value': 4328.0, 'total': 6426.0}]
+#> [{'time': datetime.time(20, 4, 5), 'duration_sec': 12.2, 'value': 2098.0,
+# 'total': 2098.0}, {'time': datetime.time(20, 5), 'duration_sec': 2.35, 'value': 4328.0,
+# 'total': 6426.0}]
 
 print(structure_id)
 #> NewExampleStructure
