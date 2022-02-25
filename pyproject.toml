@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyrsona"
-version = "0.1"
+version = "0.2"
 description = ""
 authors = ["John <johnbullnz@gmail.com>"]
 homepage = "https://github.com/johnbullnz/pyrsona"
