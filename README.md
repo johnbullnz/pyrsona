@@ -200,7 +200,11 @@ While it is possible to effectively add a wildcard using `'{}'` in the structure
 
 ### Sub-sub-models
 
-*pyrsona* build a list of *sub-models* 
+Calling the `read()` method will first build a list of *pyrsona* file structure models from the *parent* model down. 
+
+Any *sub-models* of the *parent* model will themselves be checked for *sub-models*, meaning that every model in the tree below the *parent* model will be used when attempting to parse a file.
+
+Each branch of models will be ordered bottom-up so that the deepest nested model in a branch will be used first. The *parent* model will be the final model used if all others fail.
 
 ### Model names
 
