@@ -3,13 +3,6 @@
 Text data file validation and structure management using the [pydantic](https://pydantic-docs.helpmanual.io/) and [parse](https://github.com/r1chardj0n3s/parse) Python packages.
 
 
-## Overview
-
-*pyrsona* is used to parse data from a text file into Python.
-
-It also provides a single entry point to parse data from different versions of a text data file.
-
-
 ## Installation
 
 Install using `pip install pyrsona`.
