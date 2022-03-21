@@ -136,7 +136,7 @@ print(structure_id)
 
 **What's going on here:**
 
-- A new *pyrsona* file structure model is defined based on the original `ExampleStructure` model. This mean that `structure`, `meta_model` and `row_model` will be inherited from `ExampleStructure`. This also provides a single entry point (I.e. `ExampleStructure.read()`) when attempting to read the different file versions.
+- A new *pyrsona* file structure model is defined based on the original `ExampleStructure` model. This means that `structure`, `meta_model` and `row_model` will be inherited from `ExampleStructure`. This also provides a single entry point (I.e. `ExampleStructure.read()`) when attempting to read the different file versions.
 
 - `structure` and `meta_model` are redefined to include the new `"city: Auckland"` meta data line. Alternatively, the original `meta_model` in `ExampleStructure` could have been updated to include an *optional* `city` field.
 
@@ -169,7 +169,7 @@ class ExampleStructure(BaseStructure):
         return table_rows
 ```
 
-The meta data and table_rows are now run through the post-processing stages before being returned:
+The meta data and table_rows are now run through the post-processing stages before being returned, resulting in the following changes:
 
  - A new *version* field is added to the meta data.
  - The *id* field is deleted from the table_rows and a cumulative total field is added.
@@ -195,7 +195,7 @@ print(structure_id)
 
 ### All meta lines MUST be included
 
-While it is possible to effectively add a wildcard using `'{}'` in the structure definition to ignore several lines of the meta section of the file, this can cause a later named field to be included in the wildcard section. *pyrsona* therefore checks for the presence of a new line character `'\n'` in the named fields and fails if one is found.
+While the *parse* package allows a wildcard `'{}'` to be used to ignore several lines this can cause a named field to be unexpectedly included in the wildcard section. *pyrsona* therefore checks for the presence of a new line character `'\n'` in the named field values and fails if one is found.
 
 
 ### Sub-sub-models
@@ -208,7 +208,7 @@ Each branch of models will be ordered bottom-up so that the deepest nested model
 
 ### Model names
 
-The `read()` method returns a `structure_id` variable that matches the model name. This `structure_id` can be useful when creating automated tests that sit alongside the *pyrsona* models as it provide a mechanism for confirming that a text file was parsed using the expected *pyrsona* model where multiple *sub-models* exist.
+The `read()` method returns a `structure_id` variable that matches the model name. This `structure_id` can be useful when creating automated tests that sit alongside the *pyrsona* models as it provides a mechanism for confirming that a text file was parsed using the expected *pyrsona* model where multiple *sub-models* exist.
 
 As the number of *sub-models* grows a naming convention becomes more important. One option is to set the names of any `sub-models` to a random hexadecimal value prefixed with a single underscore (in case the value begins with a number), E.g. `'_a4c15356'`. The initial underscore will be removed from model name when returning the `structure_id` value.
 
