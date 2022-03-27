@@ -133,14 +133,17 @@ class BaseStructure:
         return cls.__name__.split("_")[-1]
 
     @staticmethod
-    def _read_data_from_file(path: Union[str, Path]):
-        with open(path, "r") as f:
+    def _read_data_from_file(path: Union[str, Path], encoding: Optional[str] = None):
+        with open(path, "r", encoding=encoding) as f:
             data = f.read()
         return data
 
     @classmethod
-    def read(cls, path: Union[str, Path], parallel: bool = False):
-        data = cls._read_data_from_file(path)
+    def read(
+        cls, path: Union[str, Path], parallel: bool = False,
+        encoding: Optional[str] = None,
+    ):
+        data = cls._read_data_from_file(path, encoding)
 
         # Loop over all data structure subclasses and attempt to parse data:
         for structure in cls.get_structures():
