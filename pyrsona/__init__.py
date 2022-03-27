@@ -22,6 +22,7 @@ OS = system()
 class BaseStructure:
 
     structure = ""  # Data structure string (as per the "parse" package)
+    encoding = None  # Default text encoding
 
     class meta_model(BaseModel):
         """
@@ -143,6 +144,7 @@ class BaseStructure:
         cls, path: Union[str, Path], parallel: bool = False,
         encoding: Optional[str] = None,
     ):
+        encoding = cls.encoding if encoding is None else encoding
         data = cls._read_data_from_file(path, encoding)
 
         # Loop over all data structure subclasses and attempt to parse data:
