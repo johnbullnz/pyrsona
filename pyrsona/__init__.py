@@ -146,6 +146,7 @@ class BaseStructure:
     ):
         encoding = cls.encoding if encoding is None else encoding
         data = cls._read_data_from_file(path, encoding)
+        data = data[:-1] if data.endswith("\n") else data
 
         # Loop over all data structure subclasses and attempt to parse data:
         for structure in cls.get_structures():
