@@ -1,0 +1,7 @@
+[GROUP 1]
+var 1 = 1
+var 2 = here
+
+[GROUP 2]
+var_3 = okay
+Var 4 = 11/2/23

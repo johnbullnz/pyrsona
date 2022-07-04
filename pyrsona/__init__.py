@@ -1,4 +1,4 @@
-__version__ = "0.4"
+__version__ = "0.5"
 
 import os
 import psutil
@@ -23,6 +23,7 @@ class BaseStructure:
 
     structure = ""  # Data structure string (as per the "parse" package)
     encoding = None  # Default text encoding
+    has_table_section = True  # Data structure includes a table section
 
     class meta_model(BaseModel):
         """
@@ -58,12 +59,17 @@ class BaseStructure:
         return table_rows
 
     @classmethod
+    @property
+    def _pattern(cls) -> str:
+        return cls.structure + "{}" if cls.has_table_section else cls.structure
+
+    @classmethod
     def _extract_meta(cls, data: str) -> dict:
         """
         Extract the meta data from the data sting.
         The meta data is run through meta_postprocessor before being returned.
         """
-        parsed = parse(cls.structure + "{}", data)
+        parsed = parse(cls._pattern, data)
         if parsed is None:
             return None
 
@@ -79,7 +85,7 @@ class BaseStructure:
         """
         Extract the table rows from the data string.
         """
-        parsed = parse(cls.structure + "{}", data)
+        parsed = parse(cls._pattern, data)
         if parsed is None:
             return None
 
@@ -158,6 +164,10 @@ class BaseStructure:
             meta = structure._validate_meta(meta)
             meta = structure.meta_postprocessor(meta)
 
+            if not structure.has_table_section:
+                table_rows = []
+                break
+
             table_rows = structure._extract_table(data, meta)
             try:
                 table_rows = structure._validate_table(table_rows, parallel)
@@ -177,6 +187,43 @@ class BaseStructure:
             )
 
         return (meta, table_rows, structure.id)
+
+    # @classmethod
+    # def build(cls, path: Union[str, Path], encoding: Optional[str] = None):
+    #     data = BaseStructure._read_data_from_file(path=path, encoding=encoding)
+
+    #     new_structure = BaseStructure()
+    #     new_structure.structure = cls._derive_structure_pattern(data)
+
+    @staticmethod
+    def _derive_structure_pattern_rows(data: str):
+        structure_rows = []
+        has_table_section = False
+        for row in data.split("\n"):
+
+            for delimiter in (" : ", " = ", ": ", "= ", ":", "=", " \t ", "\t ", "\t"):
+                parts = row.split(delimiter)
+                if len(parts) != 2:
+                    continue
+
+                field_name = "_".join(parts[0].split(" ")).lower()
+
+                row = parts[0] + delimiter + "{" + field_name + "}"
+                break
+
+            if "," not in row:
+                structure_rows.append(row + "\n")
+            else:
+                has_table_section = True
+
+        if has_table_section:
+            structure_rows.append("{}")
+        else:
+            structure_rows[-1] = structure_rows[-1].rstrip("\n")
+            if len(structure_rows[-1]) == 0:
+                structure_rows = structure_rows[:-1]
+
+        return structure_rows
 
 
 class PyrsonaError(Exception):
@@ -233,3 +280,4 @@ def tab_to_comma(contents):
 
 def generate_hex():
     return uuid4().hex[:8]
+
