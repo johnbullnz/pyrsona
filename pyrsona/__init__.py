@@ -1,4 +1,4 @@
-__version__ = "0.5"
+__version__ = "0.6"
 
 import os
 import psutil
@@ -146,12 +146,7 @@ class BaseStructure:
         return data
 
     @classmethod
-    def read(
-        cls, path: Union[str, Path], parallel: bool = False,
-        encoding: Optional[str] = None,
-    ):
-        encoding = cls.encoding if encoding is None else encoding
-        data = cls._read_data_from_file(path, encoding)
+    def parse(cls, data: str, parallel: bool = False):
         data = data[:-1] if data.endswith("\n") else data
 
         # Loop over all data structure subclasses and attempt to parse data:
@@ -187,6 +182,15 @@ class BaseStructure:
             )
 
         return (meta, table_rows, structure.id)
+
+    @classmethod
+    def read(
+        cls, path: Union[str, Path], parallel: bool = False,
+        encoding: Optional[str] = None,
+    ):
+        encoding = cls.encoding if encoding is None else encoding
+        data = cls._read_data_from_file(path, encoding)
+        return cls.parse(data=data, parallel=parallel)
 
     # @classmethod
     # def build(cls, path: Union[str, Path], encoding: Optional[str] = None):
@@ -224,6 +228,23 @@ class BaseStructure:
                 structure_rows = structure_rows[:-1]
 
         return structure_rows
+
+
+    @classmethod
+    def parse_line_by_line(cls, data: str):
+        data = data[:-1] if data.endswith("\n") else data
+        lines = data.split("\n")
+        patterns = cls._pattern.split("\n")
+
+        output = []
+        for ii, pattern in enumerate(patterns):
+            output.append({
+                "index": ii,
+                "data": lines[ii],
+                "pattern": pattern,
+                "output": parse(pattern, lines[ii]),
+            })
+        return output
 
 
 class PyrsonaError(Exception):
