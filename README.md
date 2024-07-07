@@ -189,6 +189,50 @@ print(structure_id)
 #> NewExampleStructure
 ```
 
+### Array data in field
+
+Sometimes the table rows contain array data that is not easily converted to a pydantic model. In this case, the `row_model` can be omitted and the `table_postprocessor` method can be used to convert the table rows into a more suitable format.
+
+```python
+class ExampleStructure(BaseStructure):
+
+    structure = (
+        "operator name: {operator_name}\n"
+        "country: {country}\n"
+        "year: {}\n"
+        "\n"
+        "ID,Time,Duration (sec),Reading\n"
+    )
+
+    class meta_model(BaseModel):
+        operator_name: str
+        country: str
+
+    @staticmethod
+    def table_postprocessor(table_rows, meta):
+
+        class row_model(BaseModel):
+            id: int
+            array_data: list[str]
+
+        ids = [row[0] for row in table_rows]
+        array_data = [row[1:] for row in table_rows]
+
+        table_rows = [
+            row_model(id=row_id, array_data=row_array_data).dict()
+            for row_id, row_array_data in zip(ids, array_data)
+        ]
+
+        return table_rows
+```
+
+With an undefined `row_model` the table row data would be returned as a list of strings. The `table_postprocessor` method can then be used to convert the data into a more suitable format using custom logic.
+
+```python
+print(table_rows)
+#> [{'id': 1, 'array_data': ['20:04:05', '12.2', '2098']}, {'id': 2, 'array_data': ['20:05:00','2.35','4328']}]
+```
+
 
 ## Extra details
 

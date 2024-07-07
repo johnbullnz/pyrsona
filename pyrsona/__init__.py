@@ -93,9 +93,9 @@ class BaseStructure:
         # convert to list of dicts using the row_model fields as the keys:
         table_data = parsed.fixed[-1]
         table_data = [row.split(",") for row in tab_to_comma(table_data).split("\n")]
-        table_rows = [dict(zip(cls.row_model.__fields__, row)) for row in table_data]
-
-        return table_rows
+        if cls.row_model.__fields__ == {}:
+            return table_data
+        return [dict(zip(cls.row_model.__fields__, row)) for row in table_data]
 
     @classmethod
     def _validate_meta(cls, meta):
@@ -165,7 +165,8 @@ class BaseStructure:
 
             table_rows = structure._extract_table(data, meta)
             try:
-                table_rows = structure._validate_table(table_rows, parallel)
+                if cls.row_model.__fields__ != {}:
+                    table_rows = structure._validate_table(table_rows, parallel)
             except ValidationError:
                 table_rows = None
                 continue

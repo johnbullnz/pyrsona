@@ -24,3 +24,14 @@ def test_new_example_structure():
         {'id': 2, 'time': time(20, 5), 'duration_sec': 2.35, 'value': 4328.0},
     ]
     assert new_example_structure.structure_id == "NewExampleStructure"
+
+
+def test_no_row_model_example():
+    from examples import no_row_model_example
+
+    assert no_row_model_example.meta == {'operator_name': 'Jane Smith', 'country': 'NZ'}
+    assert no_row_model_example.table_rows == [
+        {'id': 1, 'array_data': ['20:04:05', '12.2', '2098']},
+        {'id': 2, 'array_data': ['20:05:00','2.35','4328']},
+    ]
+    assert no_row_model_example.structure_id == "ExampleStructure"
