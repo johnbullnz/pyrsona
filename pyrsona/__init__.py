@@ -20,7 +20,6 @@ OS = system()
 
 
 class BaseStructure:
-
     structure = ""  # Data structure string (as per the "parse" package)
     encoding = None  # Default text encoding
     has_table_section = True  # Data structure includes a table section
@@ -29,12 +28,14 @@ class BaseStructure:
         """
         Meta data Pydantic model.
         """
+
         pass
 
     class row_model(BaseModel):
         """
         Table row Pydantic model.
         """
+
         pass
 
     @staticmethod
@@ -42,7 +43,7 @@ class BaseStructure:
         """
         Meta data postprocessor.
         This method is used to modify the meta data following parsing by `meta_model`. A
-        possible use case is combining 'date' and 'time' meta data fields into a single 
+        possible use case is combining 'date' and 'time' meta data fields into a single
         'datetime' field.
         """
         return meta
@@ -80,7 +81,10 @@ class BaseStructure:
 
     @classmethod
     def _extract_table(
-        cls, data: str, meta: Optional[dict] = None, parallel: bool = True,
+        cls,
+        data: str,
+        meta: Optional[dict] = None,
+        parallel: bool = True,
     ) -> dict:
         """
         Extract the table rows from the data string.
@@ -110,7 +114,10 @@ class BaseStructure:
         Validate the table rows using row_model.
         """
         return validate_table_rows(
-            cls.row_model, table_rows, exclude_unset=True, parallel=parallel,
+            cls.row_model,
+            table_rows,
+            exclude_unset=True,
+            parallel=parallel,
         )
 
     @classmethod
@@ -165,7 +172,7 @@ class BaseStructure:
 
             table_rows = structure._extract_table(data, meta)
             try:
-                if cls.row_model.__fields__ != {}:
+                if structure.row_model.__fields__ != {}:
                     table_rows = structure._validate_table(table_rows, parallel)
             except ValidationError:
                 table_rows = None
@@ -186,7 +193,9 @@ class BaseStructure:
 
     @classmethod
     def read(
-        cls, path: Union[str, Path], parallel: bool = False,
+        cls,
+        path: Union[str, Path],
+        parallel: bool = False,
         encoding: Optional[str] = None,
     ):
         encoding = cls.encoding if encoding is None else encoding
@@ -205,7 +214,6 @@ class BaseStructure:
         structure_rows = []
         has_table_section = False
         for row in data.split("\n"):
-
             for delimiter in (" : ", " = ", ": ", "= ", ":", "=", " \t ", "\t ", "\t"):
                 parts = row.split(delimiter)
                 if len(parts) != 2:
@@ -230,7 +238,6 @@ class BaseStructure:
 
         return structure_rows
 
-
     @classmethod
     def parse_line_by_line(cls, data: str):
         data = data[:-1] if data.endswith("\n") else data
@@ -239,12 +246,14 @@ class BaseStructure:
 
         output = []
         for ii, pattern in enumerate(patterns):
-            output.append({
-                "index": ii,
-                "data": lines[ii],
-                "pattern": pattern,
-                "output": parse(pattern, lines[ii]),
-            })
+            output.append(
+                {
+                    "index": ii,
+                    "data": lines[ii],
+                    "pattern": pattern,
+                    "output": parse(pattern, lines[ii]),
+                }
+            )
         return output
 
 
@@ -302,4 +311,3 @@ def tab_to_comma(contents):
 
 def generate_hex():
     return uuid4().hex[:8]
-
