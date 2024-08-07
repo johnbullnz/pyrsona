@@ -1,38 +1,17 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/docker-existing-dockerfile
 {
-	"name": "dev-pyrsona",
-	"context": "./",
-	"dockerFile": "./Dockerfile",
-	"onCreateCommand": "/root/onCreate.sh",
-	"extensions": [
-		"ms-python.python",
-		"ms-python.pylance",
-		"github.copilot-nightly",
-		"ryanluker.vscode-coverage-gutters",
-		"njpwerner.autodocstring"
-	],
-	"settings": {
-		"editor.formatOnSave": false,
-		"python.formatting.provider": "black",
-		"python.formatting.autopep8Path": "/usr/local/bin/autopep8",
-		"python.formatting.blackPath": "./venv/bin/black",
-		"python.defaultInterpreterPath": "./venv/bin/python",
-		"python.languageServer": "Pylance",
-		"python.linting.enabled": true,
-		"python.linting.pylintEnabled": true,
-		"python.linting.pycodestyleEnabled": true,
-		"python.linting.flake8Path": "/usr/local/bin/flake8",
-		"python.linting.mypyPath": "/usr/local/bin/mypy",
-		"python.linting.pycodestylePath": "/usr/local/bin/pycodestyle",
-		"python.linting.pydocstylePath": "/usr/local/bin/pydocstyle",
-		"python.linting.pylintPath": "/usr/local/bin/pylint",
-		"python.analysis.typeCheckingMode": "off",
-		"python.testing.pytestArgs": [
-			"tests"
-		],
-		"python.testing.unittestEnabled": false,
-		"python.testing.pytestEnabled": true,
-		"autoDocstring.docstringFormat": "numpy"
-	}
+    "name": "pyrsona",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+    "features": {
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    "postCreateCommand": "./.devcontainer/postCreate.sh",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "python.defaultInterpreterPath": "venv/bin/python"
+            }
+        }
+    }
 }

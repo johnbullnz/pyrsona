@@ -1,0 +1,25 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.0
+    hooks:
+    -   id: ruff
+-   repo: https://github.com/psf/black
+    rev: 23.9.1
+    hooks:
+    -   id: black
+-   repo: local
+    hooks:
+    -   id: tests
+        name: run tests
+        entry: pytest
+        args: [-m, 'not slow']
+        always_run: true
+        language: system
+        types: [python]
+        stages: [commit]
