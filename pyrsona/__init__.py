@@ -1,4 +1,4 @@
-__version__ = "0.7"
+__version__ = "1.0"
 
 import os
 import psutil
