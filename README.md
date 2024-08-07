@@ -1,5 +1,7 @@
 # pyrsona
 
+<img align="right" src="https://github.com/johnbullnz/pyrsona/actions/workflows/python.yml/badge.svg">
+
 Text data file validation and structure management using the [pydantic](https://pydantic-docs.helpmanual.io/) and [parse](https://github.com/r1chardj0n3s/parse) Python packages.
 
 
