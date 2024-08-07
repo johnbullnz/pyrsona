@@ -29,6 +29,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.ruff.lint]
 select = ["E", "F"]
+ignore = ["E501"]
 
 [tool.pytest.ini_options]
 markers = {slow = "mark test as slow"}

@@ -1,19 +1,13 @@
-
 from parse import Result
 from pydantic import BaseModel, validator
-import pytest
 from datetime import date, time, datetime
 
 from pyrsona import BaseStructure
 
 
 class TestStructure(BaseStructure):
-
     structure = (
-        "operator name: {operator_name}\n"
-        "date: {date}\n"
-        "\n"
-        "id,time,value\n"
+        "operator name: {operator_name}\n" "date: {date}\n" "\n" "id,time,value\n"
     )
 
     class meta_model(BaseModel):

@@ -1,10 +1,8 @@
 from pyrsona import BaseStructure
 from pydantic import BaseModel
-from datetime import time
 
 
 class ExampleStructure(BaseStructure):
-
     structure = (
         "operator name: {operator_name}\n"
         "country: {country}\n"
@@ -19,7 +17,6 @@ class ExampleStructure(BaseStructure):
 
     @staticmethod
     def table_postprocessor(table_rows, meta):
-
         class row_model(BaseModel):
             id: int
             array_data: list[str]
@@ -38,4 +35,4 @@ class ExampleStructure(BaseStructure):
 meta, table_rows, structure_id = ExampleStructure.read("examples/example.txt")
 
 print(table_rows)
-#> [{'id': 1, 'array_data': ['20:04:05', '12.2', '2098']}, {'id': 2, 'array_data': ['20:05:00','2.35','4328']}]
+# > [{'id': 1, 'array_data': ['20:04:05', '12.2', '2098']}, {'id': 2, 'array_data': ['20:05:00','2.35','4328']}]
