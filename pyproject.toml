@@ -36,3 +36,4 @@ markers = {slow = "mark test as slow"}
 testpaths = [
     "tests",
 ]
+pythonpath = ["examples"]
