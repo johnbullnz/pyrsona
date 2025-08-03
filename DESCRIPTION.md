@@ -53,7 +53,7 @@ This project follows a GitHub-based development workflow:
 ## Code Patterns and Conventions
 
 ### Structure Model Definition
-- Inherit from `BaseStructure` 
+- Inherit from `BaseStructure`
 - Define `structure` class attribute with parse pattern
 - Create `meta_model` and `row_model` pydantic classes
 - Optional post-processors for data transformation
