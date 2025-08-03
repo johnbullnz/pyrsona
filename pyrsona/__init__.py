@@ -97,16 +97,16 @@ class BaseStructure:
         # convert to list of dicts using the row_model fields as the keys:
         table_data = parsed.fixed[-1]
         table_data = [row.split(",") for row in tab_to_comma(table_data).split("\n")]
-        if cls.row_model.__fields__ == {}:
+        if cls.row_model.model_fields == {}:
             return table_data
-        return [dict(zip(cls.row_model.__fields__, row)) for row in table_data]
+        return [dict(zip(cls.row_model.model_fields, row)) for row in table_data]
 
     @classmethod
     def _validate_meta(cls, meta):
         """
         Validate the meta data using meta_model.
         """
-        return cls.meta_model(**meta).dict(exclude_unset=True)
+        return cls.meta_model(**meta).model_dump(exclude_unset=True)
 
     @classmethod
     def _validate_table(cls, table_rows, parallel=True):
@@ -172,7 +172,7 @@ class BaseStructure:
 
             table_rows = structure._extract_table(data, meta)
             try:
-                if structure.row_model.__fields__ != {}:
+                if structure.row_model.model_fields != {}:
                     table_rows = structure._validate_table(table_rows, parallel)
             except ValidationError:
                 table_rows = None
@@ -276,7 +276,7 @@ def limit_cpu():
 @unsync(cpu_bound=True)
 def call_row_model(row_model, rows, exclude_unset=False):
     limit_cpu()
-    return [row_model(**row).dict(exclude_unset=exclude_unset) for row in rows]
+    return [row_model(**row).model_dump(exclude_unset=exclude_unset) for row in rows]
 
 
 @unsync(cpu_bound=True)
@@ -292,7 +292,9 @@ def validate_table_rows(row_model, table_rows, exclude_unset=False, parallel=Tru
             for rows in np.array_split(table_rows, CPU_COUNT)
         ]
         return unpack_results(tasks)
-    return [row_model(**row).dict(exclude_unset=exclude_unset) for row in table_rows]
+    return [
+        row_model(**row).model_dump(exclude_unset=exclude_unset) for row in table_rows
+    ]
 
 
 def preprocess_table_rows(row_preprocessor, table_rows, parallel=True):

@@ -1,5 +1,5 @@
 from parse import Result
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 from datetime import date, time, datetime
 
 from pyrsona import BaseStructure
@@ -14,7 +14,8 @@ class TestStructure(BaseStructure):
         operator_name: str
         date: date
 
-        @validator("date", pre=True)
+        @field_validator("date", mode="before")
+        @classmethod
         def parse_date(cls, value):
             return datetime.strptime(value, "%d/%m/%Y").date()
 
