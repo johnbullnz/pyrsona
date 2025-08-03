@@ -132,3 +132,4 @@ poetry.lock
 cov.xml
 
 .vscode
+.cl*
