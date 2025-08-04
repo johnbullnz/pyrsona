@@ -60,7 +60,6 @@ class BaseStructure:
         return table_rows
 
     @classmethod
-    @property
     def _pattern(cls) -> str:
         return cls.structure + "{}" if cls.has_table_section else cls.structure
 
@@ -70,7 +69,7 @@ class BaseStructure:
         Extract the meta data from the data sting.
         The meta data is run through meta_postprocessor before being returned.
         """
-        parsed = parse(cls._pattern, data)
+        parsed = parse(cls._pattern(), data)
         if parsed is None:
             return None
 
@@ -89,7 +88,7 @@ class BaseStructure:
         """
         Extract the table rows from the data string.
         """
-        parsed = parse(cls._pattern, data)
+        parsed = parse(cls._pattern(), data)
         if parsed is None:
             return None
 
@@ -121,7 +120,6 @@ class BaseStructure:
         )
 
     @classmethod
-    @property
     def children(cls) -> list:
         """
         List of data structure classes derived from this parent class.
@@ -133,13 +131,12 @@ class BaseStructure:
         """
         Return all parent and child pyrsona file structure models.
         """
-        if len(cls.children) == 0:
+        if len(cls.children()) == 0:
             return [cls]
-        temp = [cc.get_structures() for cc in cls.children]
+        temp = [cc.get_structures() for cc in cls.children()]
         return [ii for ss in temp for ii in ss] + [cls]
 
     @classmethod
-    @property
     def id(cls) -> str:
         """
         Data structure ID.
@@ -189,7 +186,7 @@ class BaseStructure:
                 "file."
             )
 
-        return (meta, table_rows, structure.id)
+        return (meta, table_rows, structure.id())
 
     @classmethod
     def read(
@@ -242,7 +239,7 @@ class BaseStructure:
     def parse_line_by_line(cls, data: str):
         data = data[:-1] if data.endswith("\n") else data
         lines = data.split("\n")
-        patterns = cls._pattern.split("\n")
+        patterns = cls._pattern().split("\n")
 
         output = []
         for ii, pattern in enumerate(patterns):

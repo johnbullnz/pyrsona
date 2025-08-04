@@ -1,6 +1,4 @@
-
 from parse import parse
-
 from pyrsona import BaseStructure
 
 
@@ -17,7 +15,9 @@ def test_derive_structure_pattern_rows_demo_structure_1():
 
 
 def test_derive_structure_pattern_rows_demo_structure_2_4d41ccd5():
-    data = BaseStructure._read_data_from_file("tests/data/demo_structure_2_4d41ccd5.txt")
+    data = BaseStructure._read_data_from_file(
+        "tests/data/demo_structure_2_4d41ccd5.txt"
+    )
     structure_rows = BaseStructure._derive_structure_pattern_rows(data)
     assert structure_rows == [
         "4d41ccd5\n",
